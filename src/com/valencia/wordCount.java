@@ -6,20 +6,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+/**
+ * Contains methods used to find the amount of words from a string and their frequencies
+ */
 public class wordCount {
 	
 	private HashMap<String, Integer> wordFrequency;
 	private Object[] wordsArray;
+	private int count = 1;
 	
+	/**
+	 * Constructor method for wordCount class, Counts the occurrences of each unique word in a given string. Then, uses a hashmap to sort the words and print them to the console.
+	 * 
+	 * @param fullString String to be analyzed
+	 */
 	public wordCount(String fullString) {
-		
-		/*
-		 * Constructor method for wordCount class: Counts the occurrences of each unique word in a given string.
-		 * @Param fullString is the string for the method to analyze for words
-		 * fullString is first converted to lowercase and then split into words using the split method and then set to String s for further computation
-		 * HashMap wordFrequency is created and used to map each unique word to a value which increments for each unique occurrence in String s.
-		 * sortWords() is called to sort wordFrequency into the top occurring values and printWords() prints the top 20 words and their occurrences.
-		 */
 		
 		String[] s;
 		
@@ -42,21 +43,41 @@ public class wordCount {
 		printWords();
 	}
 	
-	public void printWords() {
+	/**
+	 * Returns a single line of string of a word and its occurrences. The index of the word is incremented by one each time the method is called.
+	 * 
+	 * @return Returns a string with a formatted line containing the word and its frequency of occurrence.
+	 */
+	public String getWords() {
 		
-		/*
-		 * Prints the top 20 highest occurring words and their occurrences to the console.
-		 * Uses the Int count to only print the first 20 values before breaking from the loop.
-		 * 
-		 */
-		int count = 1;
+		String line = "";
 		
 		for (Object i : wordsArray) {
 			
-		    System.out.println(count + ": (Word: " + ((Map.Entry<String, Integer>) i).getKey() + " , Occurences: "+ ((Map.Entry<String, Integer>) i).getValue() + ")");
+			i = wordsArray[count - 1];
+			
+		    line = count + ": Word: " + ((Map.Entry<String, Integer>) i).getKey() + " , Occurences: "+ ((Map.Entry<String, Integer>) i).getValue() + "";
 		    count++;
 		    
-		    if (count > 20) {
+		    return line;
+		}
+		
+		return "";
+	}
+	
+	/**
+	 * Prints the top 20 highest occurring words and their occurrences to the console.
+	 */
+	public void printWords() {
+		
+		int c = 1;
+		
+		for (Object i : wordsArray) {
+			
+		    System.out.println(c + ": (Word: " + ((Map.Entry<String, Integer>) i).getKey() + " , Occurences: "+ ((Map.Entry<String, Integer>) i).getValue() + ")");
+		    c++;
+		    
+		    if ( c > 20) {
 		    	break;
 		    }
 		}
@@ -64,12 +85,10 @@ public class wordCount {
 		System.out.println("\nSuccess!");
 	}
 	
+	/**
+	 * Sorts wordFrequency HashMap to make it organized by the highest occurring word first.
+	 */
 	private void sortWords() {
-		
-		/*
-		 * Sorts the wordFrequency HashMap by turning it into an Object array to have its second dimension(the occurring values) be compared to each other to sort it by highest occurring values first.
-		 * The Comparator compares the value of the return from compare to determine if the value of o1 is greater than the value of o2.
-		 */
 		
 		wordsArray = wordFrequency.entrySet().toArray();
 		

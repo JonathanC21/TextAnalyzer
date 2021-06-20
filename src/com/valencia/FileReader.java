@@ -8,7 +8,9 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Contains methods used to read from a file and get its string value.
+ */
 public class FileReader {
 
 	final private String FILE_NAME = "The Project Gutenberg eBook of The Raven, by Edgar Allan Poe.htm";
@@ -16,15 +18,10 @@ public class FileReader {
 	private String fileString = "";
 	
 	
+		/**
+		 * Constructor method for FileReader. Removes html tags and gets a string value from a file.
+		 */
 		public FileReader() {
-			
-			/*
-			 * Constructor method for FileReader Class
-			 * Reads the text from the file using the readAllLines method with the file path as its parameter
-			 * Builds string of the entire file by iterating each line of the file
-			 * Replaces all of the html tags in the file to blank spaces
-			 * Shortens the string to the poem only using the characters before and after the poem as index parameters for the substring method
-			 */
 			
 			List<String> fileLineString = new ArrayList<String>();
 			
@@ -61,11 +58,12 @@ public class FileReader {
 			}
 		}
 		
+		/**
+		 * Accessor method returning the string value from a file after its html tags have been removed.
+		 * 
+		 * @return Returns the string value from the file 
+		 */
 		public String getFileString() {
-			
-			/*
-			 * Accessor method for fileString, which is a string of the poem after it has been modified by the constructor
-			 */
 			
 			return fileString;
 		}
