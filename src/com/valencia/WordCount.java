@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 /**
  * Contains methods used to find the amount of words from a string and their frequencies
  */
-public class wordCount {
+public class WordCount {
 	
 	private HashMap<String, Integer> wordFrequency;
 	private Object[] wordsArray;
@@ -20,7 +20,7 @@ public class wordCount {
 	 * 
 	 * @param fullString String to be analyzed
 	 */
-	public wordCount(String fullString) {
+	public WordCount(String fullString) {
 		
 		String[] s;
 		
@@ -39,8 +39,11 @@ public class wordCount {
 			wordFrequency.put(key, ++occur);
 		}
 		
-		sortWords();
-		printWords();
+		wordsArray = sortWords(wordFrequency);
+		
+		//System.out.println(wordsArray[0]);
+		
+		printWords(wordsArray);
 	}
 	
 	/**
@@ -67,12 +70,14 @@ public class wordCount {
 	
 	/**
 	 * Prints the top 20 highest occurring words and their occurrences to the console.
+	 * 
+	 * @param object The object array to print to the console, formatted by the word and its frequency of appearance.
 	 */
-	public void printWords() {
+	public void printWords(Object[] object) {
 		
 		int c = 1;
 		
-		for (Object i : wordsArray) {
+		for (Object i : object) {
 			
 		    System.out.println(c + ": (Word: " + ((Map.Entry<String, Integer>) i).getKey() + " , Occurences: "+ ((Map.Entry<String, Integer>) i).getValue() + ")");
 		    c++;
@@ -87,10 +92,13 @@ public class wordCount {
 	
 	/**
 	 * Sorts wordFrequency HashMap to make it organized by the highest occurring word first.
+	 * 
+	 * @param hash HashMap to sort
+	 * @return Returns the sorted HashMap as an object array
 	 */
-	private void sortWords() {
+	public Object[] sortWords(HashMap hash) {
 		
-		wordsArray = wordFrequency.entrySet().toArray();
+		wordsArray = hash.entrySet().toArray();
 		
 		Arrays.sort(wordsArray, new Comparator() {
 			
@@ -99,5 +107,7 @@ public class wordCount {
 			        return ((Map.Entry<String, Integer>) o2).getValue().compareTo(((Map.Entry<String, Integer>) o1).getValue());
 			    }
 		});
+		
+		return wordsArray;
 	}
 }

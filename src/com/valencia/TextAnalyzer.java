@@ -8,7 +8,7 @@ package com.valencia;
 public class TextAnalyzer {
 	
 	FileReader fileReader;
-	wordCount topWords;
+	WordCount wordCount;
 	
 	/**
 	 * Runs the programs by initiating the FileReader and WordCount classes as objects.
@@ -19,7 +19,7 @@ public class TextAnalyzer {
 		System.out.println("Starting program...\n");
 		
 		fileReader = new FileReader();
-		topWords = new wordCount(fileReader.getFileString());
+		wordCount = new WordCount(fileReader.getFileString());
 		
 	}
 	
@@ -29,10 +29,7 @@ public class TextAnalyzer {
 	 * @return Returns a string containing the word and its frequency in an organized format
 	 */
 	public String getLines() {
-		
-		String lines;
-		
-		lines = topWords.getWords();
-		return lines;
+
+		return wordCount.getWords();
 	}
 }
