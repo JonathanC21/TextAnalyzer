@@ -1,10 +1,10 @@
 package com.valencia;
 
+import java.sql.Connection;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 /**
  * Contains methods used to find the amount of words from a string and their frequencies
@@ -19,8 +19,11 @@ public class WordCount {
 	 * Constructor method for wordCount class, Counts the occurrences of each unique word in a given string. Then, uses a hashmap to sort the words and print them to the console.
 	 * 
 	 * @param fullString String to be analyzed
+	 * @throws Exception 
 	 */
-	public WordCount(String fullString) {
+	public WordCount(String fullString) throws Exception {
+		
+		Database.truncateWord();
 		
 		String[] s;
 		
@@ -31,19 +34,29 @@ public class WordCount {
 		
 		System.out.println("Finding the most frequent words...\n");
 		
+		
 		for (int i = 0; i < s.length; i++) {
-			
-			String key = s[i];
-			int occur = wordFrequency.getOrDefault(key, 0);
-			
-			wordFrequency.put(key, ++occur);
+		  
+			String key = s[i]; int occur = wordFrequency.getOrDefault(key, 0);
+			wordFrequency.put(key, ++occur); 
 		}
 		
+		 
+		Connection con = Database.getConnection();
+		
+		for (int i = 0; i < s.length; i++) {
+			
+			Database.insertIntoDatabase(s[i],con);
+		}
+		
+		con.close();
+		
 		wordsArray = sortWords(wordFrequency);
-		
-		//System.out.println(wordsArray[0]);
-		
 		printWords(wordsArray);
+	}
+	
+	private void getFrequencyFromDatabase() {
+		
 	}
 	
 	/**
@@ -51,6 +64,7 @@ public class WordCount {
 	 * 
 	 * @return Returns a string with a formatted line containing the word and its frequency of occurrence.
 	 */
+	@SuppressWarnings("unchecked")
 	public String getWords() {
 		
 		String line = "";
@@ -68,11 +82,19 @@ public class WordCount {
 		return "";
 	}
 	
+	public String getWordsFromDatabase() {
+		
+		
+		
+		return "";
+	}
+	
 	/**
 	 * Prints the top 20 highest occurring words and their occurrences to the console.
 	 * 
 	 * @param object The object array to print to the console, formatted by the word and its frequency of appearance.
 	 */
+	@SuppressWarnings("unchecked")
 	public void printWords(Object[] object) {
 		
 		int c = 1;
@@ -96,11 +118,12 @@ public class WordCount {
 	 * @param hash HashMap to sort
 	 * @return Returns the sorted HashMap as an object array
 	 */
-	public Object[] sortWords(HashMap hash) {
+	@SuppressWarnings("unchecked")
+	public Object[] sortWords(HashMap<String, Integer> hash) {
 		
 		wordsArray = hash.entrySet().toArray();
 		
-		Arrays.sort(wordsArray, new Comparator() {
+		Arrays.sort(wordsArray, new Comparator<Object>() {
 			
 			   public int compare(Object o1, Object o2) {
 				   

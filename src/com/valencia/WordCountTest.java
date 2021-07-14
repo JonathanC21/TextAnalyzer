@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 class WordCountTest {
 
 	@Test
-	void test() {
+	void test() throws Exception {
 		WordCount test = new WordCount("test");
 		assertNotNull(test);
 		

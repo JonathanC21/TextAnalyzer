@@ -1,24 +1,15 @@
 package com.valencia;
 
-import java.awt.Color;
-import java.awt.LayoutManager;
-import java.awt.Panel;
-
-import javax.swing.JPanel;
-
 import javafx.application.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.stage.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.TextAlignment;
 import javafx.scene.Scene;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.event.ActionEvent;
 
 
 /**
@@ -33,20 +24,22 @@ public class Main extends Application {
 	 * The main method of the program. Contains high level methods.
 	 * 
 	 * @param args
+	 * @throws Exception 
 	 */
-	public static void main(String args[]) {
+	public static void main(String args[]) throws Exception {
 		
 		textAnalyzer = new TextAnalyzer();
-		textAnalyzer.run();
 		
 		launch(args);
 		
+		Database.getConnection().close();
 		System.out.println("\nClosing program...");
 		System.exit(0);
 	}
 
 	@Override
 	public void start(final Stage primaryStage) throws Exception {
+		
 		
 		primaryStage.setTitle("Word Occurences Program");
 		Button analyzeButton = new Button("Analyze File");
@@ -83,30 +76,49 @@ public class Main extends Application {
 		hbox2.setAlignment(Pos.CENTER);
 		hbox2.setStyle("-fx-background-color: #8A8888;");
 		
+		
+		
 		TextArea occurences = new TextArea();
-		for (int i = 0; i < 20; i++) {
-			
-			occurences.appendText(textAnalyzer.getLines() + "\n");
-		}
-			
 		occurences.setEditable(false);
 		
 		BorderPane borderpane1 = new BorderPane();
 		borderpane1.setTop(vbox1);
 		borderpane1.setCenter(analyzeButton);
 		borderpane1.setBottom(hbox1);
-		borderpane1.setAlignment(mainLabel1, Pos.CENTER);
+		BorderPane.setAlignment(mainLabel1, Pos.CENTER);
 		
 		BorderPane borderpane2 = new BorderPane();
 		borderpane2.setTop(vbox2);
 		borderpane2.setCenter(occurences);
 		borderpane2.setBottom(hbox2);
-		borderpane2.setAlignment(mainLabel2, Pos.CENTER);
+		BorderPane.setAlignment(mainLabel2, Pos.CENTER);
 
 		Scene scene = new Scene(borderpane1, 500, 400);
 		Scene scene2 = new Scene(borderpane2,500,400);
 		
-		analyzeButton.setOnAction(e -> primaryStage.setScene(scene2));
+		//analyzeButton.setOnAction(e -> primaryStage.setScene(scene2));
+		
+		analyzeButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				try {
+					
+					textAnalyzer.run();
+				} catch (Exception e) {
+					
+					System.out.println(e.getMessage());
+				}
+				
+				for (int i = 0; i < 20; i++) {
+					
+					occurences.appendText(textAnalyzer.getLines() + "\n");
+				}
+				
+				primaryStage.setScene(scene2);
+			}
+			
+		});
 		
 		primaryStage.setScene(scene);
 		primaryStage.show();

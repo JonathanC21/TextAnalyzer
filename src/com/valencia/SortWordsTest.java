@@ -1,20 +1,15 @@
 package com.valencia;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.junit.jupiter.api.Test;
 
 class SortWordsTest {
 
 	@Test
-	void test() {
-		HashMap testHash = new HashMap();
+	void test() throws Exception {
+		HashMap<String, Integer> testHash = new HashMap<String, Integer>();
 		testHash.put("a", 1);
 		testHash.put("b", 3);
 		testHash.put("c", 2);

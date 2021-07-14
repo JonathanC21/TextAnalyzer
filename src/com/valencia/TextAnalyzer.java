@@ -12,9 +12,10 @@ public class TextAnalyzer {
 	
 	/**
 	 * Runs the programs by initiating the FileReader and WordCount classes as objects.
+	 * @throws Exception 
 	 * 
 	 */
-	public void run() {
+	public void run() throws Exception {
 		
 		System.out.println("Starting program...\n");
 		

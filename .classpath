@@ -2,7 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/Jonathan Cubas/Desktop/Java Valencia/jfxrt.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
+	<classpathentry kind="lib" path="C:/Users/Jonathan Cubas/Desktop/Java Valencia/jfxrt.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jonathan Cubas/Desktop/Java Valencia/mysql-connector-java-8.0.24.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
