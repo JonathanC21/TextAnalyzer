@@ -14,9 +14,10 @@ public class WordCount {
 	private HashMap<String, Integer> wordFrequency;
 	private Object[] wordsArray;
 	private int count = 1;
+	private Connection con;
 	
 	/**
-	 * Constructor method for wordCount class, Counts the occurrences of each unique word in a given string. Then, uses a hashmap to sort the words and print them to the console.
+	 * Constructor method for wordCount class, Counts the occurrences of each unique word in a given string. Then, uses a HashMap to sort the words and add them to the database.
 	 * 
 	 * @param fullString String to be analyzed
 	 * @throws Exception 
@@ -24,7 +25,6 @@ public class WordCount {
 	public WordCount(String fullString) throws Exception {
 		
 		Database.truncateWord();
-		
 		String[] s;
 		
 		fullString = fullString.toLowerCase();
@@ -32,8 +32,7 @@ public class WordCount {
 		
 		wordFrequency = new HashMap<String, Integer>();
 		
-		System.out.println("Finding the most frequent words...\n");
-		
+		System.out.println("Removing duplicates from the string...");
 		
 		for (int i = 0; i < s.length; i++) {
 		  
@@ -41,96 +40,27 @@ public class WordCount {
 			wordFrequency.put(key, ++occur); 
 		}
 		
-		 
-		Connection con = Database.getConnection();
+		System.out.println("Inserting words into database...");
+		
+		con = Database.getConnection();
 		
 		for (int i = 0; i < s.length; i++) {
 			
 			Database.insertIntoDatabase(s[i],con);
 		}
-		
-		con.close();
-		
-		wordsArray = sortWords(wordFrequency);
-		printWords(wordsArray);
-	}
-	
-	private void getFrequencyFromDatabase() {
-		
 	}
 	
 	/**
-	 * Returns a single line of string of a word and its occurrences. The index of the word is incremented by one each time the method is called.
+	 * Selects a row from the database using a count value that increments each time the method is called. This returns the database data from a specified row as a single line
 	 * 
-	 * @return Returns a string with a formatted line containing the word and its frequency of occurrence.
+	 * @return Returns a string containing a single line from a database row
+	 * @throws Exception
 	 */
-	@SuppressWarnings("unchecked")
-	public String getWords() {
+	public String getWordsFromDatabase() throws Exception {
 		
-		String line = "";
+		String line = Database.selectRowFromDatabase(con,count);
+		count++;
 		
-		for (Object i : wordsArray) {
-			
-			i = wordsArray[count - 1];
-			
-		    line = count + ": Word: " + ((Map.Entry<String, Integer>) i).getKey() + " , Occurences: "+ ((Map.Entry<String, Integer>) i).getValue() + "";
-		    count++;
-		    
-		    return line;
-		}
-		
-		return "";
-	}
-	
-	public String getWordsFromDatabase() {
-		
-		
-		
-		return "";
-	}
-	
-	/**
-	 * Prints the top 20 highest occurring words and their occurrences to the console.
-	 * 
-	 * @param object The object array to print to the console, formatted by the word and its frequency of appearance.
-	 */
-	@SuppressWarnings("unchecked")
-	public void printWords(Object[] object) {
-		
-		int c = 1;
-		
-		for (Object i : object) {
-			
-		    System.out.println(c + ": (Word: " + ((Map.Entry<String, Integer>) i).getKey() + " , Occurences: "+ ((Map.Entry<String, Integer>) i).getValue() + ")");
-		    c++;
-		    
-		    if ( c > 20) {
-		    	break;
-		    }
-		}
-		
-		System.out.println("\nSuccess!");
-	}
-	
-	/**
-	 * Sorts wordFrequency HashMap to make it organized by the highest occurring word first.
-	 * 
-	 * @param hash HashMap to sort
-	 * @return Returns the sorted HashMap as an object array
-	 */
-	@SuppressWarnings("unchecked")
-	public Object[] sortWords(HashMap<String, Integer> hash) {
-		
-		wordsArray = hash.entrySet().toArray();
-		
-		Arrays.sort(wordsArray, new Comparator<Object>() {
-			
-			   public int compare(Object o1, Object o2) {
-				   
-			        return ((Map.Entry<String, Integer>) o2).getValue().compareTo(((Map.Entry<String, Integer>) o1).getValue());
-			    }
-		});
-		
-		return wordsArray;
+		return line;
 	}
 }

@@ -1,7 +1,9 @@
 package com.valencia;
 
+import java.sql.Connection;
+
 /**
- * Handles the main analyzation classes used to get the word frequencies.
+ * Handles the main analzsation classes used to get the word frequencies.
  * 
  *
  */
@@ -28,9 +30,10 @@ public class TextAnalyzer {
 	 * Accessor method for getting a string containing one word and its frequency. The index of the word is incremented each time the method is called.
 	 * 
 	 * @return Returns a string containing the word and its frequency in an organized format
+	 * @throws Exception 
 	 */
-	public String getLines() {
+	public String getLines() throws Exception {
 
-		return wordCount.getWords();
+		return wordCount.getWordsFromDatabase();
 	}
 }

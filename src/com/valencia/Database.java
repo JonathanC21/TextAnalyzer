@@ -23,9 +23,9 @@ public final class Database {
 		try {
 			
 			String driver = "com.mysql.cj.jdbc.Driver";
-			String url = "jdbc:mysql://localhost/wordoccurrences";
+			String url = "jdbc:mysql://localhost/wordoccurences";
 			String username = "root";
-			String password = "pass";
+			String password = "";
 			Class.forName(driver);
 			
 			Connection con = DriverManager.getConnection(url, username, password);;
@@ -68,9 +68,10 @@ public final class Database {
 	
 	
 	/**
-	 * Inserts a string value into the word table's word column
+	 * Inserts a string value into the word table's word column. Since the word_id column is unique, each duplicate word triggers an increment to the frequency column for the same row
 	 * 
 	 * @param word The word string to insert into the word table's word column
+	 * @param con The database connection
 	 * @throws Exception
 	 */
 	public static void insertIntoDatabase(String word,Connection con) throws Exception {
@@ -94,21 +95,35 @@ public final class Database {
 		}
 	}
 	
-	public static void selectRowFromDatabase(Connection con) throws Exception {
+	/**
+	 * Selects a row from the wordoccurences database using a database and outputs the word and frequency column as a string
+	 * 
+	 * @param con The database connection
+	 * @param count The row to select from
+	 * @return Returns the string value of the word and frequency column formatted
+	 * @throws Exception
+	 */
+	public static String selectRowFromDatabase(Connection con,int count) throws Exception {
+		
+		String line = "";
 		
 		try {
 			
-			PreparedStatement getRow = con.prepareStatement("SELECT * FROM word");
+			PreparedStatement getRow = con.prepareStatement("SELECT * FROM word ORDER BY frequency DESC");
 			ResultSet result = getRow.executeQuery();
 			
-			while (result.next()) {
+			for (int  i = 0; i < count; i++) {
 				
-				System.out.println(result.getString(1) + result.getInt(2));
+				result.next();
 			}
+			
+			line =  count + ". Word: '" + result.getString(1) + "' Frequency: " + result.getInt(2);
 		}
 		catch(SQLException e){
 			
-			
+			System.out.println(e.getMessage());
 		}
+		
+		return line;
 	}
 }

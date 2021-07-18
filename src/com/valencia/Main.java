@@ -110,18 +110,25 @@ public class Main extends Application {
 					System.out.println(e.getMessage());
 				}
 				
+				System.out.println("Getting words and frequency from the database...");
 				for (int i = 0; i < 20; i++) {
 					
-					occurences.appendText(textAnalyzer.getLines() + "\n");
+					try {
+						
+						occurences.appendText(textAnalyzer.getLines() + "\n");
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 				
 				primaryStage.setScene(scene2);
+				System.out.println("Success!");
 			}
 			
 		});
 		
 		primaryStage.setScene(scene);
 		primaryStage.show();
-		
 	}
 }
